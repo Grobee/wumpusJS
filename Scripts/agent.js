@@ -33,8 +33,8 @@ function Agent(x, y){
 
         SearchTree.closedList.push({ x: this.currPos.x, y: this.currPos.y });
 
-        rand = Math.random();
-        /* dfs with a random element to it */
+        /*rand = Math.random();
+        dfs with a random element to it
         if(rand < 0.4){
             rand = Math.floor(Math.random() * shifted);
             nextStep = SearchTree.openList[rand];
@@ -44,7 +44,10 @@ function Agent(x, y){
             do {
                 nextStep = SearchTree.openList.shift();
             } while(!KnowledgeBase.db[nextStep.x][nextStep.y].isSafe());
-        }
+        }*/
+        do {
+            nextStep = SearchTree.openList.shift();
+        } while(!KnowledgeBase.db[nextStep.x][nextStep.y].isSafe());
 
         /* set agent positions */
         this.prevPos = { x: this.currPos.x, y: this.currPos.y };

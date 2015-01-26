@@ -24,6 +24,8 @@ var KnowledgeBase = {
     /* relouad our knowledge database */
     reload: function(){
         var i;
+        var wumpusTiles = 0;
+        var tempWumpusCoords = { x: 0, y: 0 };
 
         for(i = 0; i < this.sentences.length; i++){
             if(this.wumpusIsAlive) this.cellMod(this.sentences[i].pos.x, this.sentences[i].pos.y, i, Type.WUMPUS);
@@ -42,6 +44,20 @@ var KnowledgeBase = {
                 if(this.wumpusIsAlive && this.db[i][j].wumpusCount >= 2) this.wumpusCoords = { x: i, y: j };
                 this.db[i][j].wumpusCount = 0;
             }
+        }
+
+        for(i = 0; i < DIM; i++){
+            for(j = 0; j < DIM; j++){
+                if(this.db[i][j].hasWumpus) {
+                    wumpusTiles++;
+                    tempWumpusCoords = { x: i, y: j };
+                }
+            }
+        }
+
+        if(wumpusTiles == 1){
+            this.wumpusCoords = { x: tempWumpusCoords.x, y: tempWumpusCoords.y };
+            console.log(this.wumpusCoords);
         }
     },
 
