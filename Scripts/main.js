@@ -47,6 +47,7 @@ window.onload = function() {
 
         /* see if the agent is still alive */
         if(Map.tiles[agent.currPos.x][agent.currPos.y].hasPit) {
+            new Audio('Sound/fall.mp3').play();
             console.log("--------------------------------------");
             console.log("Aaaahhhh!");
             console.log("--------------------------------------");
@@ -54,6 +55,7 @@ window.onload = function() {
         }
 
         if(Map.tiles[agent.currPos.x][agent.currPos.y].hasWumpus) {
+            new Audio('Sound/roar.mp3').play()
             console.log("--------------------------------");
             console.log("Noo! The agent has been eaten by the Wumpus!");
             console.log("--------------------------------------");
@@ -65,19 +67,40 @@ window.onload = function() {
 
         /* going back to the start */
         if(agent.hasGold) {
+            new Audio('Sound/tada.wav').play();
+
+            clearInterval(game);
+            seeIfHasGold();
+        }
+    }
+
+    var back;
+
+    function seeIfHasGold(){
+        if(agent.hasGold){
             console.log("--------------------------------------");
             console.log("Going back to the start...");
             console.log("--------------------------------------");
+            back = setInterval(goBack, 1000);
+        }
+    }
 
-            while(SearchTree.closedList.length > 0){
-                if(agent.currPos.x == 3 && agent.currPos.y == 0) break;
-                agent.goBack();
-            }
-
+    function goBack(){
+        if(agent.goBack() == -1) {
+            clearInterval(back);
+            new Audio("Sound/ovation.mp3").play();
             console.log("--------------------------------------");
             console.log("Woohoo!! I am rich!!");
             console.log("--------------------------------------");
-            clearInterval(game);
         }
+        else if(agent.currPos.x == 3 && agent.currPos.y == 0) {
+            clearInterval(back);
+            new Audio("Sound/ovation.mp3").play();
+            console.log("--------------------------------------");
+            console.log("Woohoo!! I am rich!!");
+            console.log("--------------------------------------");
+        }
+
+        Draw.drawmove(document.getElementById("Canvas1"),"backward",agent.currPos.x,agent.currPos.y);
     }
 };

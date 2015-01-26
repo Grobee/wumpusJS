@@ -114,11 +114,16 @@ function Agent(x, y){
     };
 
     this.goBack = function(){
+        if(SearchTree.closedList.length == 0){
+            return -1;
+        }
+
         var nextStep = SearchTree.closedList.pop();
         this.prevPos = { x: this.currPos.x, y: this.currPos.y };
         this.currPos = { x: nextStep.x, y: nextStep.y };
 
         console.log("I am currently at x: " + this.currPos.x + " y: " + this.currPos.y);
+        return 0;
     };
 
     this.pickUp = function(){
