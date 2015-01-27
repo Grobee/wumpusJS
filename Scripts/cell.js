@@ -11,6 +11,7 @@ function Cell(x, y){
     this.visited = false;
     this.wumpusCount = 0;
     this.pitCount = 0;
+    this.heuristics = 0;
 
     this.isSafe = function(){
         if(!this.hasPit && !this.hasWumpus) return true;

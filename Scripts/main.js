@@ -136,14 +136,8 @@ window.onload = function() {
     }
 
     function goBack(){
-        if(agent.goBack() == -1) {
-            clearInterval(back);
-            new Audio("Sound/ovation.mp3").play();
-            console.log("--------------------------------------");
-            console.log("Woohoo!! I am rich!!");
-            console.log("--------------------------------------");
-        }
-        else if(agent.currPos.x == 3 && agent.currPos.y == 0) {
+        agent.goBack();
+        if(agent.currPos.x == 3 && agent.currPos.y == 0) {
             clearInterval(back);
             new Audio("Sound/ovation.mp3").play();
             console.log("--------------------------------------");

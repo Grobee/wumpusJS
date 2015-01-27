@@ -64,7 +64,7 @@ function Agent(x, y){
         }
 
         Map.countSafeNumberAndOptimize();
-        SearchTree.closedList.push({ x: this.currPos.x, y: this.currPos.y });
+        //SearchTree.closedList.push({ x: this.currPos.x, y: this.currPos.y });
 
         do {
             nextStep = SearchTree.openList.shift();
@@ -204,15 +204,38 @@ function Agent(x, y){
     };
 
     this.goBack = function(){
-        if(SearchTree.closedList.length == 0){
-            return -1;
+        var i;
+        var nextStep = { x: -1, y: -1, heur: 999};
+        var node;
+
+        if(this.currPos.y + 1 < DIM && KnowledgeBase.db[this.currPos.x][this.currPos.y + 1].visited) {
+            SearchTree.closedList.unshift({ x: this.currPos.x, y: this.currPos.y + 1 });
+        }
+        if(this.currPos.y - 1 >= 0 && KnowledgeBase.db[this.currPos.x][this.currPos.y - 1].visited) {
+            SearchTree.closedList.unshift({ x: this.currPos.x, y: this.currPos.y - 1 });
+        }
+        if(this.currPos.x + 1 < DIM && KnowledgeBase.db[this.currPos.x + 1][this.currPos.y].visited) {
+            SearchTree.closedList.unshift({ x: this.currPos.x + 1, y: this.currPos.y });
+        }
+        if(this.currPos.x - 1 >= 0 && KnowledgeBase.db[this.currPos.x - 1][this.currPos.y].visited) {
+            SearchTree.closedList.unshift({ x: this.currPos.x - 1, y: this.currPos.y });
         }
 
-        var nextStep = SearchTree.closedList.pop();
+        /* heur */
+        for(i = 0; i < SearchTree.closedList.length; i++){
+            node = SearchTree.closedList.shift();
+            KnowledgeBase.db[node.x][node.y].heuristics = Math.sqrt(Math.abs(3 - node.x) + Math.abs(0 - node.y));
+
+            if(nextStep.heur > KnowledgeBase.db[node.x][node.y].heuristics) {
+                nextStep.x = node.x;
+                nextStep.y = node.y;
+                nextStep.heur = KnowledgeBase.db[node.x][node.y].heuristics;
+            }
+        }
+
         this.prevPos = { x: this.currPos.x, y: this.currPos.y };
         this.currPos = { x: nextStep.x, y: nextStep.y };
 
-        console.log(KnowledgeBase.wumpusCoords);
         this.killWumpus();
 
         console.log("I am currently at x: " + this.currPos.x + " y: " + this.currPos.y);
