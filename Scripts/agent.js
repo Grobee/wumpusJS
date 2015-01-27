@@ -2,7 +2,8 @@ function Agent(x, y){
     this.currPos = {x: x, y: y};
     this.prevPos = {x: x, y: y};
     this.hasGold = false;
-    this.ammo = 1;
+    this.ammo = 15;
+    this.score = 50;
 
     this.move = function(){
         /* variables */
@@ -62,13 +63,12 @@ function Agent(x, y){
             }
         }
 
-        SearchTree.closedList.push({ x: this.currPos.x, y: this.currPos.y });
         Map.countSafeNumberAndOptimize();
-
-        console.log(SearchTree.openList);
+        SearchTree.closedList.push({ x: this.currPos.x, y: this.currPos.y });
 
         do {
             nextStep = SearchTree.openList.shift();
+            console.log(nextStep);
         } while(!KnowledgeBase.db[nextStep.x][nextStep.y].isSafe());
 
         /* set this positions */
@@ -140,6 +140,24 @@ function Agent(x, y){
             }
         }
 
+        if(!Map.tiles[this.currPos.x][this.currPos.y].hasStink && !Map.tiles[this.currPos.x][this.currPos.y].hasBreeze){
+            if(this.currPos.y + 1 < DIM && this.currPos.y + 1 != this.prevPos.y) {
+                this.setAdjacentCell(new Cell(this.currPos.x, this.currPos.y + 1), Type.NOTHING);
+            }
+            /* second */
+            if(this.currPos.y - 1 >= 0 && this.currPos.y - 1 != this.prevPos.y) {
+                this.setAdjacentCell(new Cell(this.currPos.x, this.currPos.y - 1), Type.NOTHING);
+            }
+            /* third */
+            if(this.currPos.x + 1 < DIM && this.currPos.x + 1 != this.prevPos.x) {
+                this.setAdjacentCell(new Cell(this.currPos.x + 1, this.currPos.y ), Type.NOTHING);
+            }
+            /* fourth */
+            if(this.currPos.x - 1 >= 0 && this.currPos.x - 1 != this.prevPos.x) {
+                this.setAdjacentCell(new Cell(this.currPos.x - 1, this.currPos.y ), Type.NOTHING);
+            }
+        }
+
         KnowledgeBase.reload();
     };
 
@@ -152,6 +170,10 @@ function Agent(x, y){
                 break;
             case Type.PIT:
                 cell.hasPit = true;
+                break;
+            case Type.NOTHING:
+                cell.hasWumpus = false;
+                cell.hasPit = false;
                 break;
         }
 
@@ -192,6 +214,7 @@ function Agent(x, y){
                     KnowledgeBase.wumpusIsAlive = false;
 
                     console.log("A loud scream can be heard! The Wumpus is dead!!");
+                    this.score += 1000;
                 }
                 else{ /* the this was at the wrong position */
                      console.log("Oh noes! I was wrong about this...");
@@ -210,6 +233,9 @@ function Agent(x, y){
         var nextStep = SearchTree.closedList.pop();
         this.prevPos = { x: this.currPos.x, y: this.currPos.y };
         this.currPos = { x: nextStep.x, y: nextStep.y };
+
+        console.log(KnowledgeBase.wumpusCoords);
+        this.killWumpus();
 
         console.log("I am currently at x: " + this.currPos.x + " y: " + this.currPos.y);
         return 0;

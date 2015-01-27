@@ -8,9 +8,10 @@ var Orientation = {
     UP: 3
 };
 
-var MAX_STEPS = 45;
+var MAX_STEPS = 50;
 
 var Type = {
     WUMPUS: 0,
-    PIT: 1
+    PIT: 1,
+    NOTHING: 2
 };
