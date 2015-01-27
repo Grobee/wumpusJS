@@ -100,61 +100,41 @@ function Agent(x, y){
      * and add new knowledge base entries based upon the
      * observations */
     this.gatherAdjacentInfo = function(){
-        if(Map.tiles[this.currPos.x][this.currPos.y].hasBreeze){
+        if(Map.tiles[this.currPos.x][this.currPos.y].hasBreeze || Map.tiles[this.currPos.x][this.currPos.y].hasStink){
             /* if the position is not out of bounds
              * if not, create an entry */
-            if(this.currPos.y + 1 < DIM && this.currPos.y + 1 != this.prevPos.y) {
-                this.setAdjacentCell(new Cell(this.currPos.x, this.currPos.y + 1), Type.PIT);
-            }
-            /* second */
-            if(this.currPos.y - 1 >= 0 && this.currPos.y - 1 != this.prevPos.y) {
-                this.setAdjacentCell(new Cell(this.currPos.x, this.currPos.y - 1), Type.PIT);
-            }
-            /* third */
-            if(this.currPos.x + 1 < DIM && this.currPos.x + 1 != this.prevPos.x) {
-                this.setAdjacentCell(new Cell(this.currPos.x + 1, this.currPos.y ), Type.PIT);
-            }
-            /* fourth */
-            if(this.currPos.x - 1 >= 0 && this.currPos.x - 1 != this.prevPos.x) {
-                this.setAdjacentCell(new Cell(this.currPos.x - 1, this.currPos.y ), Type.PIT);
-            }
-        }
+            var cell;
 
-        if(Map.tiles[this.currPos.x][this.currPos.y].hasStink){
-            /* if the position is not out of bounds
-             * if not, create an entry */
             if(this.currPos.y + 1 < DIM && this.currPos.y + 1 != this.prevPos.y) {
-                this.setAdjacentCell(new Cell(this.currPos.x, this.currPos.y + 1), Type.WUMPUS);
+                cell = new Cell(this.currPos.x, this.currPos.y + 1);
+                if(Map.tiles[this.currPos.x][this.currPos.y].hasBreeze) this.setAdjacentCell(cell, Type.PIT);
+                if(Map.tiles[this.currPos.x][this.currPos.y].hasStink) this.setAdjacentCell(cell, Type.WUMPUS);
+                if(!Map.tiles[this.currPos.x][this.currPos.y].hasBreeze && !Map.tiles[this.currPos.x][this.currPos.y].hasStink) this.setAdjacentCell(cell, Type.NOTHING);
+                KnowledgeBase.add(cell);
             }
             /* second */
             if(this.currPos.y - 1 >= 0 && this.currPos.y - 1 != this.prevPos.y) {
-                this.setAdjacentCell(new Cell(this.currPos.x, this.currPos.y - 1), Type.WUMPUS);
+                cell = new Cell(this.currPos.x, this.currPos.y - 1);
+                if(Map.tiles[this.currPos.x][this.currPos.y].hasBreeze) this.setAdjacentCell(cell, Type.PIT);
+                if(Map.tiles[this.currPos.x][this.currPos.y].hasStink) this.setAdjacentCell(cell, Type.WUMPUS);
+                if(!Map.tiles[this.currPos.x][this.currPos.y].hasBreeze && !Map.tiles[this.currPos.x][this.currPos.y].hasStink) this.setAdjacentCell(cell, Type.NOTHING);
+                KnowledgeBase.add(cell);
             }
             /* third */
             if(this.currPos.x + 1 < DIM && this.currPos.x + 1 != this.prevPos.x) {
-                this.setAdjacentCell(new Cell(this.currPos.x + 1, this.currPos.y ), Type.WUMPUS);
+                cell = new Cell(this.currPos.x + 1, this.currPos.y);
+                if(Map.tiles[this.currPos.x][this.currPos.y].hasBreeze) this.setAdjacentCell(cell, Type.PIT);
+                if(Map.tiles[this.currPos.x][this.currPos.y].hasStink) this.setAdjacentCell(cell, Type.WUMPUS);
+                if(!Map.tiles[this.currPos.x][this.currPos.y].hasBreeze && !Map.tiles[this.currPos.x][this.currPos.y].hasStink) this.setAdjacentCell(cell, Type.NOTHING);
+                KnowledgeBase.add(cell);
             }
             /* fourth */
             if(this.currPos.x - 1 >= 0 && this.currPos.x - 1 != this.prevPos.x) {
-                this.setAdjacentCell(new Cell(this.currPos.x - 1, this.currPos.y ), Type.WUMPUS);
-            }
-        }
-
-        if(!Map.tiles[this.currPos.x][this.currPos.y].hasStink && !Map.tiles[this.currPos.x][this.currPos.y].hasBreeze){
-            if(this.currPos.y + 1 < DIM && this.currPos.y + 1 != this.prevPos.y) {
-                this.setAdjacentCell(new Cell(this.currPos.x, this.currPos.y + 1), Type.NOTHING);
-            }
-            /* second */
-            if(this.currPos.y - 1 >= 0 && this.currPos.y - 1 != this.prevPos.y) {
-                this.setAdjacentCell(new Cell(this.currPos.x, this.currPos.y - 1), Type.NOTHING);
-            }
-            /* third */
-            if(this.currPos.x + 1 < DIM && this.currPos.x + 1 != this.prevPos.x) {
-                this.setAdjacentCell(new Cell(this.currPos.x + 1, this.currPos.y ), Type.NOTHING);
-            }
-            /* fourth */
-            if(this.currPos.x - 1 >= 0 && this.currPos.x - 1 != this.prevPos.x) {
-                this.setAdjacentCell(new Cell(this.currPos.x - 1, this.currPos.y ), Type.NOTHING);
+                cell = new Cell(this.currPos.x - 1, this.currPos.y);
+                if(Map.tiles[this.currPos.x][this.currPos.y].hasBreeze) this.setAdjacentCell(cell, Type.PIT);
+                if(Map.tiles[this.currPos.x][this.currPos.y].hasStink) this.setAdjacentCell(cell, Type.WUMPUS);
+                if(!Map.tiles[this.currPos.x][this.currPos.y].hasBreeze && !Map.tiles[this.currPos.x][this.currPos.y].hasStink) this.setAdjacentCell(cell, Type.NOTHING);
+                KnowledgeBase.add(cell);
             }
         }
 
@@ -176,8 +156,6 @@ function Agent(x, y){
                 cell.hasPit = false;
                 break;
         }
-
-        KnowledgeBase.add(cell);
     };
 
     this.killWumpus = function(){

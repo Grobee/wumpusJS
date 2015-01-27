@@ -6,39 +6,63 @@ window.onload = function() {
     var steps = 0;
     var agent = new Agent(DIM - 1, 0);
 
-    /* initialize map */
-    Map.tiles[0][0].hasStink = true;
-    Map.tiles[1][0].hasWumpus = true;
-    Map.wumpusCoords = { x: 1, y: 0};
-    Map.tiles[2][0].hasStink = true;
-    Map.tiles[1][1].hasBreeze = true;
-    Map.tiles[1][1].hasStink = true;
-    Map.tiles[1][1].hasGold = true;
-    Map.tiles[1][1].hasGlimmer = true;
-    Map.tiles[1][3].hasBreeze = true;
-    Map.tiles[2][2].hasBreeze = true;
-    Map.tiles[0][2].hasBreeze = true;
-    Map.tiles[1][2].hasPit = true;
-    Map.tiles[3][1].hasBreeze = true;
-    Map.tiles[3][3].hasBreeze = true;
-    Map.tiles[3][2].hasPit = true;
-    Map.tiles[0][3].hasPit = true;
+    var rand = Math.floor(Math.random() * 2);
+    if(rand == 2) rand--;
 
-    /*Map.tiles[0][0].hasStink = true;
-    Map.tiles[1][0].hasWumpus = true;
-    Map.wumpusCoords = { x: 1, y: 0};
-    Map.tiles[2][0].hasStink = true;
+    if(rand == 0){
+        /* initialize map */
+         Map.tiles[0][0].hasStink = true;
+         Map.tiles[1][0].hasWumpus = true;
+         Map.wumpusCoords = { x: 1, y: 0};
+         Map.tiles[2][0].hasStink = true;
+         Map.tiles[1][1].hasBreeze = true;
+         Map.tiles[1][1].hasStink = true;
+         Map.tiles[1][1].hasGold = true;
+         Map.tiles[1][1].hasGlimmer = true;
+         Map.tiles[1][3].hasBreeze = true;
+         Map.tiles[2][2].hasBreeze = true;
+         Map.tiles[0][2].hasBreeze = true;
+         Map.tiles[1][2].hasPit = true;
+         Map.tiles[3][1].hasBreeze = true;
+         Map.tiles[3][3].hasBreeze = true;
+         Map.tiles[3][2].hasPit = true;
+         Map.tiles[0][3].hasPit = true;
+    }
+
+    if(rand == 1){
+        Map.tiles[0][0].hasStink = true;
+        Map.tiles[1][0].hasWumpus = true;
+        Map.wumpusCoords = { x: 1, y: 0};
+        Map.tiles[2][0].hasStink = true;
+        Map.tiles[1][1].hasStink = true;
+        Map.tiles[3][1].hasBreeze = true;
+        Map.tiles[2][2].hasBreeze = true;
+        Map.tiles[3][2].hasPit = true;
+        Map.tiles[1][3].hasGold = true;
+        Map.tiles[1][3].hasGlimmer = true;
+        Map.tiles[3][3].hasBreeze = true;
+        Map.tiles[0][3].hasPit = true;
+        Map.tiles[1][3].hasBreeze = true;
+        Map.tiles[0][2].hasBreeze = true;
+        Map.tiles[2][3].hasPit = true;
+    }
+
+    /*Map.tiles[0][3].hasPit = true;
+    Map.tiles[0][2].hasBreeze = true;
+    Map.tiles[0][1].hasBreeze = true;
+    Map.tiles[0][2].hasStink = true;
+    Map.tiles[0][0].hasPit = true;
+    Map.tiles[1][3].hasBreeze = true;
     Map.tiles[1][1].hasStink = true;
-    Map.tiles[3][1].hasBreeze = true;
-    Map.tiles[2][2].hasBreeze = true;
-    Map.tiles[3][2].hasPit = true;
+    Map.tiles[1][2].hasWumpus = true;
     Map.tiles[1][3].hasGold = true;
     Map.tiles[1][3].hasGlimmer = true;
-    Map.tiles[3][3].hasBreeze = true;
-    Map.tiles[0][3].hasPit = true;
-    Map.tiles[1][3].hasBreeze = true;
-    Map.tiles[0][2].hasBreeze = true;
-    Map.tiles[2][3].hasPit = true;*/
+    Map.tiles[1][0].hasBreeze = true;
+    Map.tiles[2][2].hasStink = true;
+    Map.tiles[2][2].hasBreeze = true;
+    Map.tiles[3][1].hasBreeze = true;
+    Map.tiles[3][2].hasPit = true;
+    Map.tiles[3][3].hasBreeze = true;*/
 
     //Map.generate();
     /* draw the map on canvas */

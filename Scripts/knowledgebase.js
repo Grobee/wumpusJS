@@ -35,6 +35,10 @@ var KnowledgeBase = {
             if(this.wumpusIsAlive && this.sentences[i].hasWumpus){
                 this.db[this.sentences[i].pos.x][this.sentences[i].pos.y].wumpusCount++;
             }
+
+            if(this.sentences[i].hasPit){
+                this.db[this.sentences[i].pos.x][this.sentences[i].pos.y].pitCount++;
+            }
         }
 
         /* try to find the wumpus */
@@ -46,6 +50,7 @@ var KnowledgeBase = {
             }
         }
 
+        /* find the coordinates*/
         for(i = 0; i < DIM; i++){
             for(j = 0; j < DIM; j++){
                 if(this.db[i][j].hasWumpus) {
@@ -57,8 +62,18 @@ var KnowledgeBase = {
 
         if(wumpusTiles == 1){
             this.wumpusCoords = { x: tempWumpusCoords.x, y: tempWumpusCoords.y };
-            console.log(this.wumpusCoords);
         }
+
+        /* something about the pits */
+        /*for(i = 0; i < DIM; i++){
+            for(j = 0; j < DIM; j++){
+                if(this.db[i][j].pitCount >= 2){
+                    this.db[i][j].firstPitGuess = false;
+                    this.db[i][j].hasPit = true;
+                    this.erasePits(i, j);
+                }
+            }
+        }*/
     },
 
     /* modify the cell
@@ -81,6 +96,49 @@ var KnowledgeBase = {
                 }
                 this.db[i][j].hasPit = this.db[i][j].hasPit && this.sentences[k].hasPit;
                 break;
+        }
+    },
+
+    /* if a pit is guaranteed to be on the position that is
+    * defined by (x,y), then erase further guesses */
+    erasePits: function(x, y){
+        /* first go bot */
+        if(x + 1 < DIM){
+            this.eraseOnePit(x + 1, y);
+        }
+        /* then to the right */
+        if(y + 1 < DIM){
+            this.eraseOnePit(x, y + 1);
+        }
+        /* then to left */
+        if(y - 1 >= 0){
+            this.eraseOnePit(x, y - 1);
+        }
+        /* then to the top */
+        if(x - 1 >= 0){
+            this.eraseOnePit(x - 1, y);
+        }
+    },
+
+    eraseOnePit: function(x, y){
+        if(x + 1 < DIM){
+            this.db[x][y].firstPitGuess = false;
+            this.db[x][y].hasPit = false;
+        }
+        /* then to the right */
+        if(y + 1 < DIM){
+            this.db[x][y].firstPitGuess = false;
+            this.db[x][y].hasPit = false;
+        }
+        /* then to left */
+        if(y - 1 >= 0){
+            this.db[x][y].firstPitGuess = false;
+            this.db[x][y].hasPit = false;
+        }
+        /* then to the top */
+        if(x - 1 >= 0){
+            this.db[x][y].firstPitGuess = false;
+            this.db[x][y].hasPit = false;
         }
     }
 };
