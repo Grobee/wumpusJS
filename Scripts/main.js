@@ -22,6 +22,19 @@ window.onload = function() {
     Map.tiles[3][1].hasBreeze = true;
     Map.tiles[3][3].hasBreeze = true;
     Map.tiles[3][2].hasPit = true;
+    Map.tiles[0][3].hasPit = true;
+
+     /*Map.tiles[0][0].hasStink = true;
+     Map.tiles[1][0].hasWumpus = true;
+     Map.wumpusCoords = { x: 1, y: 0};
+     Map.tiles[2][0].hasStink = true;
+     Map.tiles[1][1].hasStink = true;
+     Map.tiles[3][1].hasBreeze = true;
+     Map.tiles[2][2].hasBreeze = true;
+     Map.tiles[3][2].hasPit = true;
+     Map.tiles[1][3].hasGold = true;
+     Map.tiles[1][3].hasGlimmer = true;
+     Map.tiles[3][3].hasBreeze = true;*/
 
     /* draw the map on canvas */
     Draw.init();
@@ -42,7 +55,7 @@ window.onload = function() {
 
         /* move */
         agent.move();
-        Map.gatherAdjacentInfo(agent);
+        //console.log(KnowledgeBase.db);
         Draw.drawmove(document.getElementById("Canvas1"),"forward",agent.currPos.x,agent.currPos.y);
 
         /* see if the agent is still alive */

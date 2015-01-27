@@ -2,6 +2,7 @@ var Map = {
     tiles: [],
     dim: 0,
     wumpusCoords: { x: -1, y: -1 },
+    heursticFunc: true,
 
     init: function (dim){
         this.dim = dim;
@@ -16,51 +17,39 @@ var Map = {
         }
     },
 
-    isOutofBounds: function(x, y){
-        return !!(x >= this.dim || x < 0 || y >= this.dim || y < 0);
-    },
+    countSafeNumberAndOptimize: function(){
+        var i = 0;
+        var currentNode;
+        var tempArray = [];
 
-    /* gather information from the current cell
-    * and add new knowledge base entries based upon the
-    * observations */
-    gatherAdjacentInfo: function(agent){
-        if(this.tiles[agent.currPos.x][agent.currPos.y].hasBreeze || this.tiles[agent.currPos.x][agent.currPos.y].hasStink
-            || this.tiles[agent.currPos.x][agent.currPos.y].hasGlimmer){
-            var cell;
-            /* if the position is not out of bounds
-             * if not, create an entry */
-            if(!this.isOutofBounds(agent.currPos.x, agent.currPos.y + 1) && agent.currPos.y + 1 != agent.prevPos.y) {
-                cell = new Cell(agent.currPos.x, agent.currPos.y + 1);
-                this.setAdjacentCell(cell, { x: agent.currPos.x, y: agent.currPos.y });
-            }
-            /* second */
-            if(!this.isOutofBounds(agent.currPos.x, agent.currPos.y - 1) && agent.currPos.y - 1 != agent.prevPos.y) {
-                cell = new Cell(agent.currPos.x, agent.currPos.y - 1);
-                this.setAdjacentCell(cell, { x: agent.currPos.x, y: agent.currPos.y });
-            }
-            /* third */
-            if(!this.isOutofBounds(agent.currPos.x + 1, agent.currPos.y) && agent.currPos.x + 1 != agent.prevPos.x) {
-                cell = new Cell(agent.currPos.x + 1, agent.currPos.y );
-                this.setAdjacentCell(cell, { x: agent.currPos.x, y: agent.currPos.y });
-            }
-            /* fourth */
-            if(!this.isOutofBounds(agent.currPos.x - 1, agent.currPos.y) && agent.currPos.x - 1 != agent.prevPos.x) {
-                cell = new Cell(agent.currPos.x - 1, agent.currPos.y );
-                this.setAdjacentCell(cell, { x: agent.currPos.x, y: agent.currPos.y });
-            }
+        /* pop previous position */
+        var lastPos = SearchTree.openList.pop();
+        /* put the safe and not visited positions to the beginning of the list */
+        while(i < SearchTree.openList.length){
+           currentNode = SearchTree.openList.pop();
+
+           if(KnowledgeBase.db[currentNode.x][currentNode.y].isSafe() && !KnowledgeBase.db[currentNode.x][currentNode.y].visited){
+               SearchTree.openList.unshift(currentNode);
+           }
+           else {
+                tempArray.push(currentNode);
+           }
+
+           i++;
         }
 
-        KnowledgeBase.reload();
+        for(i = 0; i < tempArray.length; i++){
+            SearchTree.openList.push(tempArray.shift());
+        }
+
+        SearchTree.openList.push(lastPos);
     },
 
-    /* set pit */
-    setAdjacentCell: function(cell, pos){
-        if(this.tiles[pos.x][pos.y].hasBreeze) cell.hasPit = true;
-        else cell.hasPit = false;
-
-        if(this.tiles[pos.x][pos.y].hasStink) cell.hasWumpus = true;
-        else cell.hasWumpus = false;
-
-        KnowledgeBase.add(cell);
+    countHeur: function(){
+        /* SO DIFFCIULTY*/
+        /* MUCH WORK */
+        var heur = Math.random();
+        return Math.random();
+        var variable = 5 + this.dim - 5;
     }
 };

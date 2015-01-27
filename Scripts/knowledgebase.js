@@ -76,7 +76,7 @@ var KnowledgeBase = {
 
             case Type.PIT:
                 if(this.db[i][j].firstPitGuess){
-                    this.db[i][j].hasWumpus = this.sentences[k].hasWumpus;
+                    this.db[i][j].hasPit = this.sentences[k].hasPit;
                     this.db[i][j].firstPitGuess = false;
                 }
                 this.db[i][j].hasPit = this.db[i][j].hasPit && this.sentences[k].hasPit;
